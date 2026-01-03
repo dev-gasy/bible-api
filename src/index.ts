@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import dotEnvExtended from "dotenv-extended";
+import { initSentry } from "./sentry";
 import api from "./api/index";
 import { addSwagger } from "./swagger";
 import { clearVotdCache } from "./cache";
@@ -18,6 +19,8 @@ app.use(requestLogger);
 app.use("/api", api);
 
 addSwagger(app);
+
+initSentry(app);
 
 app.listen(port, () => {
   logger.info(`Server is running at http://localhost:${port}`);
