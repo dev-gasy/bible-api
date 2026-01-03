@@ -3,6 +3,8 @@ import dotEnvExtended from "dotenv-extended";
 import api from "./api/index";
 import { addSwagger } from "./swagger";
 import { clearVotdCache } from "./cache";
+import logger from "./logger";
+import { requestLogger } from "./middleware/requestLogger";
 
 dotEnvExtended.load();
 
@@ -12,12 +14,13 @@ const port = process.env.PORT ?? 3000;
 clearVotdCache();
 
 app.use(express.json());
+app.use(requestLogger);
 app.use("/api", api);
 
 addSwagger(app);
 
 app.listen(port, () => {
-  console.log(`⚡️[Server]: Server is running at http://localhost:${port}`);
+  logger.info(`Server is running at http://localhost:${port}`);
 });
 
 export default app;
